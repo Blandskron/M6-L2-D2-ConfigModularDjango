@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block title %}MVT | Estructura{% endblock %}
+{% block h1 %}MVT{% endblock %}
+
+{% block content %}
+  <div class="card">
+    <p><strong>{{ titulo }}</strong></p>
+    <p class="muted">Listado desde ORM:</p>
+  </div>
+
+  <div class="card">
+    {% if componentes %}
+      <ul>
+        {% for c in componentes %}
+          <li><strong>{{ c.nombre }}</strong> — <span class="muted">{{ c.rol }}</span></li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p class="muted">No hay componentes.</p>
+    {% endif %}
+  </div>
+{% endblock %}
