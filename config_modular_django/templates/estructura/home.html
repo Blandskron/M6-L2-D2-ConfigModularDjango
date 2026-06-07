@@ -1,15 +1,72 @@
 {% extends "base.html" %}
 
-{% block title %}Home | Estructura{% endblock %}
-{% block h1 %}Home{% endblock %}
+{% block title %}Inicio | Estructura Django{% endblock %}
+{% block h1 %}Configuración Estructural y Modular{% endblock %}
 
 {% block content %}
-  <div class="card">
-    <p><strong>{{ titulo }}</strong></p>
-    <p class="muted">Rutas:</p>
-    <ul>
-      <li><code>/hola/</code></li>
-      <li><code>/mvt/</code></li>
-    </ul>
+  <div class="card" style="background: linear-gradient(135deg, rgba(129, 140, 248, 0.1) 0%, rgba(34, 211, 238, 0.05) 100%);">
+    <h2 style="color: var(--accent-primary); margin-bottom: 12px; font-weight: 700;">¡Bienvenido a la Guía Interactiva de Django!</h2>
+    <p>Este proyecto educativo está diseñado para demostrar cómo se organiza un proyecto Django de manera profesional y modular. A través de este portal interactivo, puedes explorar la separación de responsabilidades en el patrón MVT (Modelo-Vista-Template) y entender la función de los utilitarios administrativos del framework.</p>
+  </div>
+
+  <div style="display: grid; grid-template-columns: 1fr; gap: 24px; margin-bottom: 24px;">
+    <!-- Rutas Activas -->
+    <div class="card" style="margin-bottom: 0;">
+      <h3 style="border-bottom: 1px solid var(--border-color); padding-bottom: 8px; margin-bottom: 16px; color: var(--accent-secondary);">
+        Mapas de Rutas Activas del Proyecto
+      </h3>
+      <p class="muted">El enrutamiento está modularizado. El archivo general de URLs del proyecto redirige las peticiones a la aplicación <code>estructura</code>:</p>
+      
+      <div style="display: flex; flex-direction: column; gap: 12px; margin-top: 16px;">
+        <div style="background-color: var(--bg-code); padding: 12px; border-radius: 8px; border-left: 4px solid var(--accent-primary); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
+          <div>
+            <code style="font-weight: bold; color: var(--text-main);">/</code> (Raíz)
+            <span class="muted" style="margin-left: 12px; font-size: 0.85rem;">Carga esta página de Inicio</span>
+          </div>
+          <span class="badge badge-template">Template</span>
+        </div>
+
+        <div style="background-color: var(--bg-code); padding: 12px; border-radius: 8px; border-left: 4px solid #f59e0b; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
+          <div>
+            <code style="font-weight: bold; color: var(--text-main);">/hola/</code>
+            <span class="muted" style="margin-left: 12px; font-size: 0.85rem;">Retorna un string HttpResponse directo</span>
+          </div>
+          <span class="badge badge-router">HttpResponse</span>
+        </div>
+
+        <div style="background-color: var(--bg-code); padding: 12px; border-radius: 8px; border-left: 4px solid #10b981; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
+          <div>
+            <code style="font-weight: bold; color: var(--text-main);">/mvt/</code>
+            <span class="muted" style="margin-left: 12px; font-size: 0.85rem;">Consulta a la DB (ORM) y renderiza listado</span>
+          </div>
+          <span class="badge badge-modelo">ORM + MVT</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Arquitectura del Proyecto -->
+    <div class="card" style="margin-bottom: 0;">
+      <h3 style="border-bottom: 1px solid var(--border-color); padding-bottom: 8px; margin-bottom: 16px; color: var(--accent-primary);">
+        Estructura de Archivos del Proyecto
+      </h3>
+      <p class="muted">La organización del proyecto separa claramente la configuración global de la lógica de negocio de la aplicación:</p>
+      <ul style="list-style-type: none; padding-left: 0;">
+        <li style="margin-bottom: 12px;">
+          📂 <strong>config_modular_django/</strong> (Proyecto base)
+          <ul style="list-style-type: none; padding-left: 20px; border-left: 1px dashed var(--border-color); margin-top: 6px;">
+            <li>📄 <code>settings.py</code> — Configuración global (Templates, DB, Apps).</li>
+            <li>📄 <code>urls.py</code> — Enrutador global con control de Namespaces.</li>
+          </ul>
+        </li>
+        <li>
+          📂 <strong>estructura/</strong> (Aplicación Modular)
+          <ul style="list-style-type: none; padding-left: 20px; border-left: 1px dashed var(--border-color); margin-top: 6px;">
+            <li>📄 <code>models.py</code> — Definición de las clases y tablas de datos.</li>
+            <li>📄 <code>views.py</code> — Lógica de control y procesamiento de respuestas.</li>
+            <li>📄 <code>urls.py</code> — Router específico de la app.</li>
+          </ul>
+        </li>
+      </ul>
+    </div>
   </div>
 {% endblock %}

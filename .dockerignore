@@ -1,0 +1,23 @@
+# Directorios de entornos virtuales
+venv/
+.env
+env/
+
+# Control de versiones
+.git/
+.gitignore
+
+# Base de datos local de desarrollo
+*.sqlite3
+db.sqlite3
+
+# Caché de Python y compilados
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Documentos locales y logs
+*.log
+.gemini/
+actividad_m6_l2.zip

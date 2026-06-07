@@ -97,12 +97,19 @@ Explicación de cada elemento solicitado:
 
 #### `manage.py`
 
-Script administrativo del proyecto. Se utiliza para ejecutar comandos como:
+Script administrativo del proyecto. 
+
+> [!NOTE]
+> **Aclaración Académica:** Aunque algunas guías mencionan "utilizar `manage.py` para la creación de un nuevo proyecto", técnicamente `manage.py` **no existe** hasta que el proyecto es creado. El flujo correcto es:
+> 1. Se usa `django-admin startproject <nombre_proyecto>` para crear el esqueleto y generar el archivo `manage.py`.
+> 2. Una vez creado, se utiliza `python manage.py` para la administración del proyecto (correr servidor, crear apps, etc.).
+
+Se utiliza para ejecutar comandos como:
 
 * `runserver` (servidor de desarrollo)
-* `migrate` (migraciones)
-* `startapp` (crear apps)
-* `createsuperuser` (usuario admin)
+* `migrate` (aplicar migraciones)
+* `startapp` (crear aplicaciones. **Nota:** A veces conceptualmente denominado como "startup", pero el comando exacto en Django es `startapp`).
+* `createsuperuser` (usuario administrador)
 * `help` (ayuda de comandos)
 
 #### `mi_sitio/__init__.py`
@@ -274,7 +281,30 @@ Debe responder:
 
 ---
 
-## 7) Entregables
+## 7) Despliegue con Docker y Automatización
+
+Para automatizar el desarrollo y el despliegue del proyecto, se han integrado herramientas de contenedores (Docker):
+
+* **Dockerfile**: Configura la imagen con Python 3.12, copia los requisitos del sistema y el código de Django, y prepara el entorno de ejecución.
+* **docker-entrypoint.sh**: Script de inicio que aplica las migraciones automáticamente en el contenedor y crea el superusuario administrador de forma segura e idempotente (evita fallos si el usuario ya existe).
+* **docker-compose.yml**: Orquesta el contenedor, mapea el puerto local `8000` y expone las variables de entorno con las credenciales de administración.
+
+### Instrucciones para levantar el servidor en Docker:
+
+```bash
+# Construir la imagen y arrancar el contenedor en segundo plano (detached)
+docker compose up --build -d
+
+# Revisar los logs para confirmar las migraciones y la creación del superusuario
+docker compose logs -f
+
+# Apagar y eliminar los contenedores y redes creadas
+docker compose down
+```
+
+---
+
+## 8) Entregables
 
 Comprimir en `.zip` la carpeta `actividad_m6_l2` con: 
 

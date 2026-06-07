@@ -1,23 +1,53 @@
 {% extends "base.html" %}
 
-{% block title %}MVT | Estructura{% endblock %}
-{% block h1 %}MVT{% endblock %}
+{% block title %}MVT | Estructura Django{% endblock %}
+{% block h1 %}Arquitectura MVT (Modelo - Vista - Template){% endblock %}
 
 {% block content %}
-  <div class="card">
-    <p><strong>{{ titulo }}</strong></p>
-    <p class="muted">Listado desde ORM:</p>
+  <div class="card" style="background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(34, 211, 238, 0.05) 100%);">
+    <h2 style="color: #34d399; margin-bottom: 12px; font-weight: 700;">El Patrón de Diseño de Django</h2>
+    <p>Django implementa una variación del patrón clásico MVC (Modelo-Vista-Controlador) denominada <strong>MVT</strong>. En este esquema, el propio framework actúa como el Controlador, mapeando las URLs del usuario hacia vistas específicas que interactúan con la base de datos (Modelo) y devuelven el resultado formateado (Template).</p>
   </div>
 
   <div class="card">
+    <h3 style="margin-bottom: 20px; color: var(--accent-primary);">Componentes Registrados en la Base de Datos (ORM)</h3>
+    <p class="muted" style="margin-bottom: 24px;">La siguiente lista se recupera de manera dinámica desde la base de datos SQLite a través del ORM de Django. Se crea automáticamente en la primera carga (Seed) si no existen registros:</p>
+
     {% if componentes %}
-      <ul>
+      <div style="display: flex; flex-direction: column; gap: 16px;">
         {% for c in componentes %}
-          <li><strong>{{ c.nombre }}</strong> — <span class="muted">{{ c.rol }}</span></li>
+          <div style="display: flex; align-items: center; justify-content: space-between; padding: 16px 20px; background-color: var(--bg-main); border: 1px solid var(--border-color); border-radius: 12px; transition: transform 0.2s ease, border-color 0.2s ease;" onmouseover="this.style.borderColor='rgba(129, 140, 248, 0.3)'; this.style.transform='translateX(4px)';" onmouseout="this.style.borderColor='var(--border-color)'; this.style.transform='none';">
+            <div style="display: flex; align-items: center; gap: 16px;">
+              <span style="font-size: 1.5rem;">📄</span>
+              <div>
+                <strong style="font-family: var(--font-mono); color: var(--accent-secondary); font-size: 1.05rem;">{{ c.nombre }}</strong>
+                <div class="muted" style="font-size: 0.8rem; margin-top: 2px;">Identificador del registro: #{{ c.id }}</div>
+              </div>
+            </div>
+            
+            <div>
+              {% if c.rol == "Modelo" %}
+                <span class="badge badge-modelo">Modelo</span>
+              {% elif c.rol == "Vista" %}
+                <span class="badge badge-vista">Vista</span>
+              {% elif c.rol == "Router" %}
+                <span class="badge badge-router">Router</span>
+              {% elif c.rol == "Template" %}
+                <span class="badge badge-template">Template</span>
+              {% elif c.rol == "Configuración" %}
+                <span class="badge badge-config">Configuración</span>
+              {% else %}
+                <span class="badge">{{ c.rol }}</span>
+              {% endif %}
+            </div>
+          </div>
         {% endfor %}
-      </ul>
+      </div>
     {% else %}
-      <p class="muted">No hay componentes.</p>
+      <div style="text-align: center; padding: 40px; border: 2px dashed var(--border-color); border-radius: 12px; background: rgba(0, 0, 0, 0.1);">
+        <p class="muted" style="margin: 0; font-size: 1.1rem;">No se encontraron componentes en la base de datos.</p>
+        <p class="muted" style="margin-top: 8px; font-size: 0.9rem;">Ejecuta las migraciones y actualiza la página.</p>
+      </div>
     {% endif %}
   </div>
 {% endblock %}

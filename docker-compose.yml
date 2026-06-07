@@ -1,0 +1,14 @@
+services:
+  web:
+    build: .
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./config_modular_django:/app
+      # Evita que el volumen local pise la instalación de dependencias del contenedor
+      - /app/venv/
+    environment:
+      - DJANGO_SUPERUSER_USERNAME=admin
+      - DJANGO_SUPERUSER_PASSWORD=adminpassword123
+      - DJANGO_SUPERUSER_EMAIL=admin@example.com
+    restart: always

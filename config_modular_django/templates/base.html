@@ -4,31 +4,244 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>{% block title %}Django Modular{% endblock %}</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
     <style>
-      body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; margin: 0; }
-      header, main { max-width: 980px; margin: 0 auto; padding: 16px; }
-      header { border-bottom: 1px solid #e5e7eb; }
-      nav a { margin-right: 12px; text-decoration: none; }
-      code { background: #f3f4f6; padding: 2px 6px; border-radius: 6px; }
-      .card { border: 1px solid #e5e7eb; border-radius: 12px; padding: 12px; margin: 12px 0; }
-      .muted { color: #6b7280; }
+      :root {
+        --bg-main: #0f172a;
+        --bg-card: #1e293b;
+        --bg-code: #0b1329;
+        --text-main: #f8fafc;
+        --text-muted: #94a3b8;
+        --accent-primary: #818cf8; /* Indigo */
+        --accent-secondary: #22d3ee; /* Cyan */
+        --border-color: #334155;
+        --font-body: 'Inter', system-ui, sans-serif;
+        --font-display: 'Outfit', system-ui, sans-serif;
+        --font-mono: 'Fira Code', monospace;
+        --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+        --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        background-color: var(--bg-main);
+        color: var(--text-main);
+        font-family: var(--font-body);
+        margin: 0;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        line-height: 1.6;
+      }
+
+      header {
+        border-bottom: 1px solid var(--border-color);
+        background: rgba(15, 23, 42, 0.8);
+        backdrop-filter: blur(12px);
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        padding: 16px 0;
+      }
+
+      .header-container {
+        max-width: 1000px;
+        margin: 0 auto;
+        padding: 0 24px;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      @media (min-width: 640px) {
+        .header-container {
+          flex-direction: row;
+          justify-content: space-between;
+          align-items: center;
+        }
+      }
+
+      .brand-title {
+        font-family: var(--font-display);
+        font-size: 1.5rem;
+        font-weight: 700;
+        margin: 0;
+        background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+
+      .subtitle {
+        font-size: 0.85rem;
+        color: var(--text-muted);
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        margin-bottom: 2px;
+      }
+
+      nav {
+        display: flex;
+        gap: 8px;
+      }
+
+      nav a {
+        color: var(--text-muted);
+        text-decoration: none;
+        padding: 8px 16px;
+        border-radius: 8px;
+        font-weight: 500;
+        font-size: 0.95rem;
+        transition: all 0.2s ease;
+        border: 1px solid transparent;
+      }
+
+      nav a:hover {
+        color: var(--text-main);
+        background-color: rgba(255, 255, 255, 0.05);
+      }
+
+      nav a.active {
+        color: var(--text-main);
+        background: rgba(129, 140, 248, 0.15);
+        border-color: rgba(129, 140, 248, 0.3);
+      }
+
+      main {
+        max-width: 1000px;
+        width: 100%;
+        margin: 0 auto;
+        padding: 32px 24px;
+        flex-grow: 1;
+      }
+
+      h1, h2, h3, h4 {
+        font-family: var(--font-display);
+        font-weight: 600;
+        margin-top: 0;
+      }
+
+      .page-title {
+        font-size: 2.2rem;
+        font-weight: 800;
+        margin-bottom: 24px;
+        letter-spacing: -0.02em;
+        background: linear-gradient(to right, #ffffff, #94a3b8);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+
+      .card {
+        background-color: var(--bg-card);
+        border: 1px solid var(--border-color);
+        border-radius: 16px;
+        padding: 24px;
+        margin-bottom: 24px;
+        box-shadow: var(--shadow-md);
+        transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.25s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.25s ease;
+      }
+
+      .card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 12px 20px -8px rgba(0, 0, 0, 0.5), 0 0 15px -3px rgba(129, 140, 248, 0.15);
+        border-color: rgba(129, 140, 248, 0.4);
+      }
+
+      code {
+        font-family: var(--font-mono);
+        background-color: var(--bg-code);
+        color: var(--accent-secondary);
+        padding: 3px 6px;
+        border-radius: 6px;
+        font-size: 0.9em;
+        border: 1px solid rgba(255, 255, 255, 0.05);
+      }
+
+      ul {
+        margin: 0;
+        padding-left: 20px;
+      }
+
+      li {
+        margin-bottom: 8px;
+      }
+
+      .muted {
+        color: var(--text-muted);
+      }
+
+      .badge {
+        display: inline-block;
+        padding: 4px 10px;
+        border-radius: 20px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        border: 1px solid transparent;
+      }
+
+      .badge-modelo { background: rgba(239, 68, 68, 0.15); color: #f87171; border-color: rgba(239, 68, 68, 0.3); }
+      .badge-vista { background: rgba(59, 130, 246, 0.15); color: #60a5fa; border-color: rgba(59, 130, 246, 0.3); }
+      .badge-router { background: rgba(245, 158, 11, 0.15); color: #fbbf24; border-color: rgba(245, 158, 11, 0.3); }
+      .badge-template { background: rgba(16, 185, 129, 0.15); color: #34d399; border-color: rgba(16, 185, 129, 0.3); }
+      .badge-config { background: rgba(139, 92, 246, 0.15); color: #a78bfa; border-color: rgba(139, 92, 246, 0.3); }
+
+      footer {
+        border-top: 1px solid var(--border-color);
+        padding: 24px;
+        text-align: center;
+        font-size: 0.85rem;
+        color: var(--text-muted);
+        background-color: rgba(15, 23, 42, 0.5);
+        margin-top: auto;
+      }
     </style>
   </head>
 
   <body>
     <header>
-      <div class="muted">Aplicación 2 — Configuración estructural y modular</div>
-      <h1 style="margin: 8px 0;">{% block h1 %}Django Modular{% endblock %}</h1>
+      <div class="header-container">
+        <div>
+          <div class="subtitle">M6-L2-D2 — Proyecto Educativo</div>
+          <h2 class="brand-title">Django Estructural & Modular</h2>
+        </div>
 
-      <nav>
-        <a href="{% url 'estructura:home' %}">Home</a>
-        <a href="{% url 'estructura:hola' %}">Hola</a>
-        <a href="{% url 'estructura:mvt' %}">MVT</a>
-      </nav>
+        <nav>
+          <a href="{% url 'estructura:home' %}" id="nav-home">Inicio</a>
+          <a href="{% url 'estructura:hola' %}" id="nav-hola">Hola (WS)</a>
+          <a href="{% url 'estructura:mvt' %}" id="nav-mvt">MVT</a>
+        </nav>
+      </div>
     </header>
 
     <main>
+      <h1 class="page-title">{% block h1 %}Django Modular{% endblock %}</h1>
       {% block content %}{% endblock %}
     </main>
+
+    <footer>
+      <p>Desarrollado para fines educativos — Módulo 6: Desarrollo de Aplicaciones Web con Django</p>
+    </footer>
+
+    <!-- Highlight active navigation link -->
+    <script>
+      document.addEventListener("DOMContentLoaded", function() {
+        const path = window.location.pathname;
+        if (path === '/' || path === '') {
+          document.getElementById('nav-home').classList.add('active');
+        } else if (path.includes('/mvt/')) {
+          document.getElementById('nav-mvt').classList.add('active');
+        } else if (path.includes('/hola/')) {
+          document.getElementById('nav-hola').classList.add('active');
+        }
+      });
+    </script>
   </body>
 </html>

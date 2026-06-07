@@ -417,8 +417,60 @@ python manage.py showmigrations estructura
 
 ---
 
-## 23) Salir del entorno virtual
+## 23) Ejecutar las pruebas unitarias
+
+Para verificar el funcionamiento del modelo y las vistas de la app `estructura`:
+
+```bash
+python manage.py test
+```
+
+---
+
+## 24) Salir del entorno virtual
 
 ```bash
 deactivate
 ```
+
+---
+
+## 25) Despliegue con Docker y Automatización
+
+Para levantar este proyecto utilizando Docker, sigue estos pasos:
+
+### 1) Asegúrate de tener Docker instalado
+Necesitarás [Docker Desktop](https://www.docker.com/products/docker-desktop/) instalado y en ejecución en tu sistema.
+
+### 2) Construir y levantar el contenedor
+Desde la raíz del proyecto (donde se encuentra `docker-compose.yml`), ejecuta:
+
+```bash
+docker compose up --build -d
+```
+
+Este comando:
+- Compilará la imagen de Docker usando el `Dockerfile` y `requirements.txt`.
+- Ejecutará las migraciones de base de datos automáticamente (`migrate`).
+- Creará de forma segura el superusuario administrador (`admin` con la contraseña `adminpassword123`) si no existe aún.
+- Iniciará el servidor de Django en el puerto `8000`.
+
+### 3) Comprobación
+Abre tu navegador en:
+- Sitio: `http://127.0.0.1:8000/`
+- Panel de Administración: `http://127.0.0.1:8000/admin/` (Inicia sesión con `admin` y `adminpassword123`).
+
+### 4) Detener los contenedores
+Para apagar el servidor y limpiar los recursos del contenedor:
+
+```bash
+docker compose down
+```
+
+---
+
+## 26) Licencia
+
+Este proyecto está bajo la Licencia MIT. Para más detalles, consulta el archivo [LICENSE](file:///c:/Users/BlandskronNotebook/Documents/updatesGitHubs/Django/M6/M6-L2-D2-ConfigModularDjango/LICENSE) en el directorio raíz.
+
+

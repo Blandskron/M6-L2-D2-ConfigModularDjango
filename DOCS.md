@@ -98,30 +98,39 @@ Se usó para crear el proyecto:
 django-admin startproject config_modular_django
 ```
 
-`django-admin` es el utilitario general de Django (no ligado a un proyecto específico).
+`django-admin` es la herramienta de línea de comandos de Django para tareas de administración global (no ligada a un proyecto en específico). Su función primordial es la inicialización del proyecto.
 
 ---
 
 ### manage.py
 
-Se usó para administrar el proyecto ya creado:
+Se generó automáticamente al crear el proyecto y se utiliza para administrarlo de aquí en adelante.
 
-* Ayuda general y por comando:
+> [!IMPORTANT]
+> **Diferencia Clave en el Proceso:**
+> - **`django-admin`**: Se usa para **crear** el proyecto desde cero (ej. `django-admin startproject`).
+> - **`manage.py`**: Se usa para **administrar** el proyecto una vez creado. No se puede usar para crear el proyecto inicial porque `manage.py` es producto de esa misma creación.
 
-  * `python manage.py help`
-  * `python manage.py <comando> --help`
-* Migraciones:
+Comandos principales de `manage.py`:
 
-  * `python manage.py migrate`
-  * `python manage.py makemigrations estructura`
-* Crear app:
-
+* **Ayuda general y por comando**:
+  * `python manage.py help` (muestra comandos disponibles)
+  * `python manage.py <comando> --help` (muestra opciones específicas de un comando)
+* **Migraciones (Mapeo de base de datos)**:
+  * `python manage.py makemigrations` (genera archivos de migración basados en los modelos)
+  * `python manage.py migrate` (aplica las migraciones pendientes a la base de datos)
+* **Crear aplicaciones**:
   * `python manage.py startapp estructura`
-* Servidor:
+  
+  > [!NOTE]
+  > **Nota de Comando:** Aunque conceptualmente se asocie con "dar de alta" o "startup", el comando oficial y correcto de Django es `startapp`.
+  
+* **Correr el Servidor**:
+  * `python manage.py runserver` (inicia el servidor local de desarrollo)
+* **Ejecutar Pruebas**:
+  * `python manage.py test` (ejecuta las pruebas unitarias)
 
-  * `python manage.py runserver`
-
-`manage.py` está ligado a la configuración del proyecto: usa `settings.py` automáticamente.
+`manage.py` está ligado íntimamente al proyecto porque apunta de forma predeterminada al archivo `settings.py` del mismo.
 
 ---
 
@@ -457,7 +466,24 @@ Se resuelve ejecutando:
 
 ---
 
-## 14) Qué cubre este proyecto (alcance exacto)
+## 14) Pruebas Unitarias (Tests)
+
+Un proyecto educativo de alto nivel debe enseñar la importancia de las pruebas automatizadas. En `estructura/tests.py` se han implementado pruebas unitarias que cubren:
+
+* **Modelo `Componente`**: Verifica que se crea correctamente y su representación en string (`__str__`) tenga el formato deseado (`nombre (rol)`).
+* **Vista `hola`**: Comprueba que la respuesta directa con `HttpResponse` retorne un status 200 y el texto de saludo.
+* **Vista `home`**: Verifica que el enrutamiento funcione, use la herencia de templates (`base.html` y `home.html`) y pase la variable de contexto `titulo`.
+* **Vista `mvt`**: Comprueba que si la base de datos de pruebas está vacía, se ejecuta la semilla de datos iniciales del modelo y se renderiza el listado adecuadamente.
+
+Para ejecutar las pruebas del proyecto desde el directorio raíz (donde se encuentra `manage.py`):
+
+```bash
+python manage.py test
+```
+
+---
+
+## 15) Qué cubre este proyecto (alcance exacto)
 
 * Creación de app con `startapp`
 * Diferencia proyecto vs aplicación (estructura de carpetas)
@@ -468,3 +494,41 @@ Se resuelve ejecutando:
 * Comandos de ayuda (`help`, `--help`)
 * Migraciones + ORM básico para una tabla mínima
 * Renderización y herencia de templates (DRY)
+* Pruebas unitarias para validación del modelo y vistas (`tests.py`)
+
+---
+
+## 15) Contenedores (Docker)
+
+La modularidad de Django se extiende a su entorno de despliegue mediante Docker. El proyecto incluye soporte completo para contenedores:
+
+### Estructura de Despliegue:
+* **Dockerfile**: Construye una imagen de Python ligera, instala dependencias sin almacenar cachés innecesarias y copia el código del proyecto.
+* **docker-entrypoint.sh**: Script de inicio que:
+  - Aplica migraciones al vuelo con `migrate --noinput`.
+  - Verifica si el superusuario administrativo configurado existe, y si no, lo crea de forma automatizada mediante un script de consola Django (`shell -c`).
+* **docker-compose.yml**: Permite levantar todo el sistema con un solo comando (`docker compose up`), configurando la redirección de puertos, volúmenes de desarrollo y credenciales de administrador de forma desacoplada.
+
+Para correr el contenedor:
+```bash
+docker compose up --build -d
+```
+
+---
+
+## 16) Qué cubre este proyecto (alcance exacto)
+
+* Creación de app con `startapp`
+* Diferencia proyecto vs aplicación (estructura de carpetas)
+* Componentes esenciales (models/views/urls/templates)
+* Configuración de templates (DIRS, APP_DIRS)
+* Configuración de paths con `BASE_DIR` (pathlib)
+* Enrutamiento con `path`, `include` y namespaces
+* Comandos de ayuda (`help`, `--help`)
+* Migraciones + ORM básico para una tabla mínima
+* Renderización y herencia de templates (DRY)
+* Pruebas unitarias para validación del modelo y vistas (`tests.py`)
+* Despliegue contenedorizado automatizado (Dockerfile, Docker Compose, Entrypoint)
+* Licencia del software libre (MIT)
+
+
